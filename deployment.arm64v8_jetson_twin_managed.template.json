@@ -162,7 +162,7 @@
                 "value": "false"
               },
               "STORE_CONN_STR": {
-                "value": "${BLOB_CONN_STR}"
+                "value": "${STORAGE_CONN_STR}"
               }
             }
           },
