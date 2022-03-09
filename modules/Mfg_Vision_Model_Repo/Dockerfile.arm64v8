@@ -1,0 +1,20 @@
+FROM arm64v8/python:3.7-slim-buster
+
+COPY qemu-aarch64-static /usr/bin/qemu-aarch64-static
+RUN cd /usr/bin && chmod a+rwx qemu-aarch64-static
+
+COPY /models/ /models_temp
+RUN chmod 777 -R /models_temp
+RUN mkdir /model_volume && chmod -R 777 /model_volume
+
+WORKDIR /app
+
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+
+COPY main.py ./
+COPY ./move_models.sh ./
+RUN chmod a+x ./move_models.sh
+
+
+ENTRYPOINT [ "./move_models.sh" ]

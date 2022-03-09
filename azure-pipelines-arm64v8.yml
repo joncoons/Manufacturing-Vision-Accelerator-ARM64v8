@@ -1,0 +1,83 @@
+trigger:
+  batch: true
+  branches:
+    include: 
+      - Nvidia_ARM64v8
+
+pool:
+  name: Default
+  demands:
+   - agent.name -equals ubuntu-18-04
+   
+pr:
+  autoCancel: true
+  
+variables:
+  - group: "Eaton_Var_Group"
+ 
+stages:
+  - stage: Build
+    jobs:
+      - job: Build
+        steps: 
+          - bash: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+            displayName: 'Run QEMU in privileged mode' 
+
+          - bash: docker login $(ACR_ADDR) -u $(ACR_UNAME) -p $(ACR_PWD)
+            displayName: 'Log into ACR'                    
+
+          - task: gittools.gittools.setup-gitversion-task.gitversion/setup@0
+            displayName: 'Set GitVersion assembly'
+            inputs:
+              versionSpec: '5.x.x'
+              updateAssemblyInfo: true
+
+          - task: gittools.gittools.execute-gitversion-task.gitversion/execute@0
+            displayName: 'Calculate version number'  
+            inputs:
+              targetPath: '$(System.DefaultWorkingDirectory)'
+
+          - task: AzureIoTEdge@2
+            inputs:
+              action: 'Build module images'
+              templateFilePath: "deployment.arm64v8_jetson.template.json"
+              defaultPlatform: 'arm64v8'
+            displayName: Build Edge modules
+          - task: AzureIoTEdge@2
+            inputs:
+              action: 'Push module images'
+              containerregistrytype: 'Azure Container Registry'
+              azureSubscriptionEndpoint: $(AZURE_SERVICE_CONNECTION)
+              azureContainerRegistry: '{"loginServer":"$(ACR_ADDR)", "id" : "/subscriptions/$(AZURE_SUBSCRIPTION_ID)/resourceGroups/$(RESOURCE_GROUP)/providers/Microsoft.ContainerRegistry/registries/$(ACR_UNAME)"}'
+              templateFilePath: 'deployment.arm64v8_jetson.template.json'
+              defaultPlatform: 'arm64v8'
+              fillRegistryCredential: true
+            displayName: Push Edge modules to ACR
+        
+          - script: |
+              cp config/deployment.arm64v8_jetson.arm64v8.json $(Build.ArtifactStagingDirectory)
+            displayName: Copy manifest to artifact directory
+            
+          - publish: $(Build.ArtifactStagingDirectory)
+            artifact: config
+
+  - stage: Release
+    jobs:
+    - job: Release
+      steps:
+      # Download deployment manifest from build stage
+      - download: current
+        artifact: config
+
+      # Deploy to all edge devices
+      - task: AzureIoTEdge@2
+        displayName: Create Deployment
+        inputs:
+          action: Deploy to IoT Edge devices
+          deploymentFilePath: $(Pipeline.Workspace)/config/deployment.arm64v8_jetson.arm64v8.json
+          azureSubscription: $(AZURE_SERVICE_CONNECTION)
+          iothubname: $(IOT_HUB)
+          deploymentid: VISION_ACCEL_ARM64V8
+          priority: '10'
+          deviceOption: 'Single Device'
+          deviceId: 'nvidia_xavier_agx'

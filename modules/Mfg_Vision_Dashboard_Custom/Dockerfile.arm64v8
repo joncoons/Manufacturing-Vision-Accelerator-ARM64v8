@@ -1,0 +1,26 @@
+# Written by Jon Coons, Azure AI GBB at Microsoft.
+
+FROM arm64v8/python:3.7-slim-buster
+
+COPY qemu-aarch64-static /usr/bin/qemu-aarch64-static
+RUN cd /usr/bin && chmod a+rwx qemu-aarch64-static
+
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install -y --no-install-recommends \
+    python3-pip \
+    python3-dev \
+    gcc \
+    cmake
+
+RUN python3 -m pip install --upgrade pip setuptools wheel
+RUN python3 -m pip install --upgrade flask 
+RUN python3 -m pip install influxdb-client
+
+EXPOSE 23000
+
+WORKDIR /app
+
+COPY /app/ .
+
+CMD [ "python3", "-u", "./edge_dashboard_sql.py" ]
