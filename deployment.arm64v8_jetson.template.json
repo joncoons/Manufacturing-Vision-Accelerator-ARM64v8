@@ -223,13 +223,13 @@
               }
             }
           },
-          "Mfg_Vision_Grafana_Dashboard": {
+          "Mfg_Vision_Dashboard_Grafana": {
             "version": "1.0",
             "type": "docker",
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "${MODULES.Mfg_Vision_Grafana_Dashboard}",
+              "image": "${MODULES.Mfg_Vision_Dashboard_Grafana}",
               "createOptions": {
                 "Env": [
                   "GF_SECURITY_ADMIN_PASSWORD=Pa$$word321"

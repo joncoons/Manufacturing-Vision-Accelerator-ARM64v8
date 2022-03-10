@@ -2,7 +2,7 @@ trigger:
   batch: true
   branches:
     include: 
-      - Nvidia_ARM64v8
+      - main
 
 pool:
   name: Default

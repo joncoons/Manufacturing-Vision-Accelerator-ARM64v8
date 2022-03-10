@@ -6,7 +6,7 @@
     "tag": {
       "version": "${CONTAINER_VERSION_TAG}",
       "platforms": {
-        "amd64": "./Dockerfile.amd64"
+        "arm64v8": "./Dockerfile.arm64v8"
       }
     },
     "buildOptions": [],
