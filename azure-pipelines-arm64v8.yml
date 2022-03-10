@@ -13,7 +13,7 @@ pr:
   autoCancel: true
   
 variables:
-  - group: "Eaton_Var_Group"
+  - group: "<your variable group>"
  
 stages:
   - stage: Build
@@ -77,7 +77,8 @@ stages:
           deploymentFilePath: $(Pipeline.Workspace)/config/deployment.arm64v8_jetson.arm64v8.json
           azureSubscription: $(AZURE_SERVICE_CONNECTION)
           iothubname: $(IOT_HUB)
-          deploymentid: VISION_ACCEL_ARM64V8
-          priority: '10'
+          #  The next two lines are related to automatic deployments, which we're not using for this deployment.
+          # deploymentid: VISION_ACCEL_ARM64V8
+          # priority: '10'
           deviceOption: 'Single Device'
-          deviceId: 'nvidia_xavier_agx'
+          deviceId: '<your device name>'

@@ -46,7 +46,7 @@ class CaptureInferenceStore():
             Allied_GVSP_Camera(camID, camTrigger, camURI, camLocation, camPosition, camFPS, inferenceFPS, modelACV, modelFile, labelFile, 
                 targetDim, probThres, iouThres, retrainInterval, SqlDb, SqlPwd, storeRawFrames, storeAllInferences, send_to_upload, send_to_upstream)
 
-        if camGvspBasler:     
+        elif camGvspBasler:     
             from capture.basler.camera_gvsp_basler import Basler_GVSP_Camera
             Basler_GVSP_Camera(camID, camTrigger, camURI, camLocation, camPosition, camFPS, inferenceFPS, modelACV, modelFile, labelFile, 
                 targetDim, probThres, iouThres, retrainInterval, SqlDb, SqlPwd, storeRawFrames, storeAllInferences, send_to_upload, send_to_upstream)

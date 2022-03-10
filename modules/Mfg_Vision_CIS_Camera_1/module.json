@@ -2,7 +2,7 @@
   "$schema-version": "0.0.1",
   "description": "",
   "image": {
-    "repository": "${ACR_ADDR}/eaton_cis_station1",
+    "repository": "${ACR_ADDR}/mfg_vision_cis_station1",
     "tag": {
       "version": "${CONTAINER_VERSION_TAG}",
       "platforms": {
