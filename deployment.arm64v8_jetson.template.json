@@ -323,6 +323,20 @@
                   ]
                 }
               }
+            },
+            "env": {
+              "CAMS_TO_DISPLAY": {
+                "value": "1"
+              },
+              "MYSQL_DATABASE": {
+                "value": "defectdb"
+              },
+              "MYSQL_USER": {
+                "value": "SA"
+              },
+              "MYSQL_PWD": {
+                "value": "Password123"
+              }
             }
           }
         }
