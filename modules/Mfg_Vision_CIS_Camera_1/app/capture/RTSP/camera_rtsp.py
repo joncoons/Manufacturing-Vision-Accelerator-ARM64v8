@@ -11,7 +11,7 @@ from typing import Any, Callable
 from datetime import datetime
 from capture.frame_preprocess import frame_resize
 from capture.frame_save import FrameSave
-from store.sql_insert import InsertInference
+from store.mysql_insert import InsertInference
 from PIL import Image
 
 class RTSP_Camera():
@@ -109,9 +109,7 @@ class RTSP_Camera():
                                 'detected_objects': result['predictions']
                                 }
 
-                            sql_insert = InsertInference(RTSP_Camera.sql_state, self.SqlDb, self.SqlPwd, detection_count, inference_obj)
-
-                            RTSP_Camera.sql_state = sql_insert                      
+                            sql_insert = InsertInference(self.SqlDb, self.SqlPwd, detection_count, inference_obj)                  
 
                             self.send_to_upstream(json.dumps(inference_obj))
 
@@ -169,9 +167,7 @@ class RTSP_Camera():
                                 'detected_objects': result['predictions']
                                 }
    
-                            sql_insert = InsertInference(RTSP_Camera.sql_state, self.SqlDb, self.SqlPwd, detection_count, inference_obj)
-
-                            RTSP_Camera.sql_state = sql_insert            
+                            sql_insert = InsertInference(self.SqlDb, self.SqlPwd, detection_count, inference_obj)       
 
                             self.send_to_upstream(json.dumps(inference_obj))             
                         

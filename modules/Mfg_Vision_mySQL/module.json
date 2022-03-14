@@ -2,7 +2,7 @@
   "$schema-version": "0.0.1",
   "description": "",
   "image": {
-    "repository": "${ACR_ADDR}/mfg_vision_influxdb",
+    "repository": "${ACR_ADDR}/mfg_vision_mysql",
     "tag": {
       "version": "${CONTAINER_VERSION_TAG}",
       "platforms": {

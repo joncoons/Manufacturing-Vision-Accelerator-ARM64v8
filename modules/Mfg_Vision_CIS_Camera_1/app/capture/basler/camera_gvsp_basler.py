@@ -14,7 +14,7 @@ from pypylon import pylon
 from pypylon import genicam
 from capture.frame_preprocess import frame_resize
 from capture.frame_save import FrameSave
-from store.sql_insert import InsertInference
+from store.mysql_insert import InsertInference
 
 class Basler_GVSP_Camera:
     sql_state = 0
@@ -129,9 +129,7 @@ class Basler_GVSP_Camera:
                             'detected_objects': result['predictions']
                             }
 
-                        sql_insert = InsertInference(Basler_GVSP_Camera.sql_state, self.SqlDb, self.SqlPwd, detection_count, inference_obj)
-
-                        Basler_GVSP_Camera.sql_state = sql_insert                      
+                        sql_insert = InsertInference(self.SqlDb, self.SqlPwd, detection_count, inference_obj)             
 
                         self.send_to_upstream(json.dumps(inference_obj))
 
@@ -190,9 +188,7 @@ class Basler_GVSP_Camera:
                             'detected_objects': result['predictions']
                             }
 
-                        sql_insert = InsertInference(Basler_GVSP_Camera.sql_state, self.SqlDb, self.SqlPwd, detection_count, inference_obj)
-
-                        Basler_GVSP_Camera.sql_state = sql_insert            
+                        sql_insert = InsertInference(self.SqlDb, self.SqlPwd, detection_count, inference_obj)            
 
                         self.send_to_upstream(json.dumps(inference_obj))               
                     

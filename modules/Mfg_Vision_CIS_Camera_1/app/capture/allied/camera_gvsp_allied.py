@@ -13,7 +13,7 @@ from datetime import datetime
 from capture.allied.vimba import *
 from capture.frame_preprocess import frame_resize
 from capture.frame_save import FrameSave
-from store.sql_insert import InsertInference
+from store.mysql_insert import InsertInference
 
 capturing = False
 
@@ -228,10 +228,7 @@ class Allied_GVSP_Camera:
                     'detected_objects': result['predictions']
                     }
 
-                sql_insert = InsertInference(Allied_GVSP_Camera.sql_state, self.SqlDb, self.SqlPwd, detection_count, inference_obj)
-
-                Allied_GVSP_Camera.sql_state = sql_insert 
-                print("Inserted record")                     
+                sql_insert = InsertInference(self.SqlDb, self.SqlPwd, detection_count, inference_obj)             
 
                 self.send_to_upstream(json.dumps(inference_obj))
 
@@ -290,9 +287,7 @@ class Allied_GVSP_Camera:
                     'detected_objects': result['predictions']
                     }
 
-                sql_insert = InsertInference(Allied_GVSP_Camera.sql_state, self.SqlDb, self.SqlPwd, detection_count, inference_obj)
-
-                Allied_GVSP_Camera.sql_state = sql_insert            
+                sql_insert = InsertInference(self.SqlDb, self.SqlPwd, detection_count, inference_obj)            
 
                 self.send_to_upstream(json.dumps(inference_obj))              
             

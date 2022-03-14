@@ -8,12 +8,17 @@ class TwinUpdater():
 
     def __init__(self) -> None:
         
-        self.client = IoTHubModuleClient.create_from_edge_environment()
-        self.client.connect()
-        print("Client connected")
-        twin_read = self.client.get_twin()
-        print(twin_read)
-        self.twin_to_config(twin_read)
+        try:
+            self.client = IoTHubModuleClient.create_from_edge_environment()
+            self.client.connect()
+            print("Client connected")
+            twin_read = self.client.get_twin()
+            print(twin_read)
+            self.twin_to_config(twin_read)
+
+        except Exception as e:
+            print("Unexpected error %s " % e)
+            raise
 
     def twin_to_config(self, twin_raw):
         twin_dict = self.twin_parse(twin_raw)

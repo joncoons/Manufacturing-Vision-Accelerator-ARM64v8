@@ -88,7 +88,8 @@
                   "Binds": [
                     "/home/edge_assets/images_volume:/images_volume",
                     "/home/edge_assets/model_volume:/model_volume",
-                    "/home/edge_assets/image_sink_volume/1:/image_sink_volume"
+                    "/home/edge_assets/image_sink_volume/Mfg_Vision_CIS_Camera_1:/image_sink_volume",
+                    "/home/edge_assets/CIS_Config/Mfg_Vision_CIS_Camera_1:/config"
                   ],
                   "Mounts": [
                     {
@@ -200,26 +201,37 @@
               }
             }
           },
-          "Mfg_Vision_InfluxDB": {
+          "Mfg_Vision_mySQL": {
             "version": "1.0",
             "type": "docker",
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "${MODULES.Mfg_Vision_InfluxDB}",
+              "image": "${MODULES.Mfg_Vision_mySQL}",
               "createOptions": {
+                "NetworkingConfig": {
+                  "EndpointsConfig": {
+                    "host": {}
+                  }
+                },
                 "HostConfig": {
+                  "NetworkMode": "host",
                   "Binds": [
-                    "/influxdata:/var/lib/influxdb"
+                    "/home/edge_assets/mysql_data:/var/lib_mysql"
                   ],
                   "PortBindings": {
-                    "8086/tcp": [
+                    "3306/tcp": [
                       {
-                        "HostPort": "8086"
+                        "HostPort": "3306"
                       }
                     ]
                   }
-                }
+                },
+                "Env": [
+                  "MYSQL_DATABASE=defectdb",
+                  "MYSQL_USER=SA",
+                  "MYSQL_PASSWORD=Password123"
+                ]
               }
             }
           },

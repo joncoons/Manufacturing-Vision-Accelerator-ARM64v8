@@ -1,0 +1,16 @@
+# start with standard public influx image
+FROM arm64v8/mysql:8.0.28-oracle
+
+COPY qemu-aarch64-static /usr/bin/qemu-aarch64-static
+RUN cd /usr/bin && chmod a+rwx qemu-aarch64-static
+
+ENV MYSQL_ROOT_PASSWORD=Sm&8jZX*WSkJL2j%27XT
+
+ENV MYSQL_RANDOM_ROOT_PASSWORD=false
+
+ENV MYSQL_ALLOW_EMPTY_PASSWORD=false
+
+EXPOSE 3306
+
+
+
