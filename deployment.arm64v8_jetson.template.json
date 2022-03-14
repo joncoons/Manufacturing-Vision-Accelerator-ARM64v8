@@ -235,59 +235,6 @@
               }
             }
           },
-          "Mfg_Vision_Dashboard_Grafana": {
-            "version": "1.0",
-            "type": "docker",
-            "status": "running",
-            "restartPolicy": "always",
-            "settings": {
-              "image": "${MODULES.Mfg_Vision_Dashboard_Grafana}",
-              "createOptions": {
-                "Env": [
-                  "GF_SECURITY_ADMIN_PASSWORD=Pa$$word321"
-                ],
-                "NetworkingConfig": {
-                  "EndpointsConfig": {
-                    "host": {}
-                  }
-                },
-                "Volumes": {
-                  "/etc/grafana/provisioning": {}
-                },
-                "HostConfig": {
-                  "PortBindings": {
-                    "3000/tcp": [
-                      {
-                        "HostPort": "3000"
-                      }
-                    ]
-                  },
-                  "NetworkMode": "host",
-                  "Binds": [
-                    "/home/edge_assets/images_volume:/usr/share/grafana/public/images"
-                  ],
-                  "Mounts": [
-                    {
-                      "Type": "volume",
-                      "Source": "images_volume",
-                      "Target": "/var/opt/images_volume"
-                    }
-                  ]
-                }
-              }
-            },
-            "env": {
-              "GF_SERVER_PROTOCOL": {
-                "value": "http"
-              },
-              "GF_DASHBOARDS_MIN_REFRESH_INTERVAL": {
-                "value": "100ms"
-              },
-              "GF_DOMAIN": {
-                "value": "localhost"
-              }
-            }
-          },
           "Mfg_Vision_Dashboard_Custom": {
             "version": "1.0",
             "type": "docker",

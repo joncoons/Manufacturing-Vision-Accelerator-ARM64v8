@@ -1,5 +1,7 @@
-# FROM mcr.microsoft.com/azureml/onnxruntime-1.6-ubuntu18.04-py37-cpu-inference:latest
-FROM aiotdevopsacr.azurecr.io/onnxruntime_jp451:1.8.0.2-arm64v8
+# This base container is based on the JetPack 4.5.1 version with version 1.8 of the ONNX Runtime.
+# If you need a different version, you will need to build the base container and appropriate ONNX Runtime wheel on your device.
+# 
+FROM visionaccelerator.azurecr.io/onnxruntime_jp451:1.8-arm64v8
 
 COPY qemu-aarch64-static /usr/bin/qemu-aarch64-static
 RUN cd /usr/bin && chmod a+rwx qemu-aarch64-static
@@ -20,7 +22,6 @@ RUN apt-get update
 # Comment out if not using ACV->ONNX
 RUN apt install -y --no-install-recommends \
     libprotobuf-dev protobuf-compiler 
-
 
 # Comment out if not using Allied Vision camera
 COPY VimbaSDK/Vimba_v5.1_ARM64.tgz /opt
