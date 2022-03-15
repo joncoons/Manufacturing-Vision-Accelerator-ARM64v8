@@ -59,7 +59,7 @@ class Basler_GVSP_Camera:
             cam_info = pylon.DeviceInfo()
             cam_info.SetSerialNumber(self.camURI)
             camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice(cam_info))
-            camera.open()
+            # camera.open()
             # Grabing Continusely (video) with minimal delay
             camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly) 
             converter = pylon.ImageFormatConverter()
