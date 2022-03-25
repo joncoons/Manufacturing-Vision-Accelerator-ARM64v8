@@ -13,7 +13,7 @@ class TwinUpdater():
             self.client.connect()
             print("Client connected")
             twin_read = self.client.get_twin()
-            print(twin_read)
+            # print(twin_read)
             self.twin_to_config(twin_read)
 
         except Exception as e:

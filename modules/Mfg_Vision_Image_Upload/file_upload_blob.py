@@ -20,7 +20,7 @@ class Blob_Upload():
             blob_client = container_client.get_blob_client(f"{self.cam_location}/{self.cam_position}/{self.img_name}")
             with open(f'{self.img_path}','rb') as data:
                 blob_client.upload_blob(data, blob_type="BlockBlob")
-                print(f"Successfully uploaded {self.img_name}")
+                # print(f"Successfully uploaded {self.img_name}")
         except Exception as e:
             print(e)
            
@@ -38,7 +38,7 @@ class Blob_Upload():
             global storage_client
             storage_client = BlobServiceClient.from_connection_string(self.conn_str)
             try:
-                print ("Uploading file")
+                # print ("Uploading file")
                 self.store_image()
             except Exception as e:
                 print(e)

@@ -36,7 +36,7 @@ class ONNXRuntimeObjectDetection():
         self.target_iou = target_iou
         
         self.device_type = ort.get_device()
-        print(f"ORT device: {self.device_type}")
+        # print(f"ORT device: {self.device_type}")
 
         self.session = ort.InferenceSession(model_path, providers=providers)
         self.input_name = self.session.get_inputs()[0].name

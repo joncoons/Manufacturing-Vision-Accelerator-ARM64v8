@@ -32,7 +32,7 @@ class InsertInference():
         self.t_end = time.time()
         self.t_insert = 0
 
-        print(f"SQL package:  {json.dumps(inference)}")
+        # print(f"SQL package:  {json.dumps(inference)}")
         
         self.create_record()
     
@@ -48,7 +48,7 @@ class InsertInference():
         }
 
         with msql.connect(**connect_params) as sql_conn:
-            print('Connected to DB')
+            # print('Connected to DB')
             sql_conn.autocommit = True
             cursor = sql_conn.cursor()
 
@@ -62,7 +62,7 @@ class InsertInference():
             cursor.execute(create_inference_tbl)
             cursor.execute(create_detections_tbl)
 
-            print("Created tables")
+            # print("Created tables")
 
             cursor.execute("""INSERT into InferenceData 
                         (model_name, object_detected, camera_id, camera_name, raw_image_name, raw_image_local_path,
@@ -81,7 +81,6 @@ class InsertInference():
                                     self.unique_id)
                                 )
             i = int(0)
-            print(type(self.detections))
             if self.detection_count > 0:
                 for i in range(int(self.detection_count)):
                     self.tag_id = self.detections[i]['labelId']
@@ -108,7 +107,7 @@ class InsertInference():
 
             self.t_end = time.time()
             self.t_insert = (self.t_end - self.t_begin)*1000
-            print("Insert Time in ms: {}".format(self.t_insert))
+            # print("Insert Time in ms: {}".format(self.t_insert))
 
             return self.t_insert
 

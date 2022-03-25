@@ -70,7 +70,7 @@ class Cam_File_Sink():
                     else:
                         from inference.onnxruntime_yolov5 import predict_yolo
                         result = predict_yolo(frame_optimized)
-                    print(json.dumps(result))
+                    # print(json.dumps(result))
 
                     now = datetime.now()
                     created = now.isoformat()
@@ -84,7 +84,7 @@ class Cam_File_Sink():
                     retrainFilePath = os.path.join('/images_volume', retrainFileName)
                     detection_count = len(result['predictions'])
                     t_infer = result["inference_time"]
-                    print(f"Detection Count: {detection_count}")
+                    # print(f"Detection Count: {detection_count}")
 
                     if detection_count > 0:
                         # t_route_iothub_begin = time.time()
@@ -145,7 +145,7 @@ class Cam_File_Sink():
                         self.send_to_upload(json.dumps(annotated_msg))
                         
                     elif self.storeAllInferences:
-                        print("No object detected.")
+                        # print("No object detected.")
                         inference_obj = {
                             'model_name': self.model_name,
                             'object_detected': 0,
@@ -189,8 +189,8 @@ class Cam_File_Sink():
                         self.send_to_upload(json.dumps(retrain_msg))
                 
                     delete_img = os.remove(img_path)
-                    if delete_img:
-                        print(f"Deleted image: {filename}")
+                    # if delete_img:
+                        # print(f"Deleted image: {filename}")
                 
                 self.cycle_end = time.time()
                 self.t_full_cycle = (self.cycle_end - self.cycle_begin)*1000

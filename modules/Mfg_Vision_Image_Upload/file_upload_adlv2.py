@@ -21,7 +21,7 @@ class ADL_G2_Upload():
     def store_image(self):
         self.create_file_system()
         self.create_directory()
-        print(f"Image path: {self.img_path}")
+        # print(f"Image path: {self.img_path}")
         try:
             file_client = directory_client.create_file(self.img_name)
             open_file = open(f'{self.img_path}','rb')
@@ -30,7 +30,7 @@ class ADL_G2_Upload():
             file_client.flush_data(len(read_file))
             self.t_upload_end = time.time()
             self.t_upload = (self.t_upload_end - self.t_upload_begin)*1000
-            print("Image upload time: {} milliseconds".format(self.t_upload))
+            # print("Image upload time: {} milliseconds".format(self.t_upload))
 
         except Exception as e:
             print(e)
@@ -59,7 +59,7 @@ class ADL_G2_Upload():
             global storage_client
             storage_client = DataLakeServiceClient.from_connection_string(self.conn_str)
             try:
-                print ("Uploading file")
+                # print ("Uploading file")
                 self.store_image()
             except Exception as e:
                 print(e)

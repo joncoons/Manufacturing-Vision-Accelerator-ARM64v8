@@ -82,7 +82,7 @@ def run_CIS():
 
     config_read = open("/config/variables.pkl", "rb")
     variables = pickle.load(config_read)
-    print(f"Variables: \n{variables}")
+    # print(f"Variables: \n{variables}")
 
     if variables["CAMERA_FPS"]:
         CAMERA_FPS = float(variables["CAMERA_FPS"])

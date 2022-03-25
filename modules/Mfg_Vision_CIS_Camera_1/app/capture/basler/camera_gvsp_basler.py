@@ -73,8 +73,8 @@ class Basler_GVSP_Camera:
 
                 if grabResult.GrabSucceeded():
                     # Access the image data
-                    print("SizeX: ", grabResult.Width)
-                    print("SizeY: ", grabResult.Height)
+                    # print("SizeX: ", grabResult.Width)
+                    # print("SizeY: ", grabResult.Height)
 
                     image = converter.Convert(grabResult)
                     frame = image.GetArray()
@@ -96,7 +96,7 @@ class Basler_GVSP_Camera:
                     else:
                         from inference.onnxruntime_yolov5 import predict_yolo
                         result = predict_yolo(frame_optimized)
-                    print(json.dumps(result))
+                    # print(json.dumps(result))
 
                     now = datetime.now()
                     created = now.isoformat()
@@ -110,7 +110,7 @@ class Basler_GVSP_Camera:
                     retrainFilePath = os.path.join('/images_volume', retrainFileName)
                     detection_count = len(result['predictions'])
                     t_infer = result["inference_time"]
-                    print(f"Detection Count: {detection_count}")
+                    # print(f"Detection Count: {detection_count}")
 
                     if detection_count > 0:
                         inference_obj = {
@@ -171,7 +171,7 @@ class Basler_GVSP_Camera:
                         self.send_to_upload(json.dumps(annotated_msg))
                 
                     elif self.storeAllInferences:
-                        print("No object detected.")
+                        # print("No object detected.")
                         inference_obj = {
                             'model_name': self.model_name,
                             'object_detected': 0,

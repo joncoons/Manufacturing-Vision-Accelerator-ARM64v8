@@ -74,7 +74,7 @@ class Allied_GVSP_Camera:
                     increment += 1
                     sleep(1)
             
-                self.print_preamble()
+                # self.print_preamble()
                 cam = self.get_camera(self.camID)
                 with Vimba.get_instance() as vimba:
                     vimba.register_camera_change_handler(camera_change_handler)
@@ -128,7 +128,7 @@ class Allied_GVSP_Camera:
         with Vimba.get_instance() as vimba:
             if camera_id:
                 try:
-                    print("Camera ID is " + camera_id)
+                    # print("Camera ID is " + camera_id)
                     return vimba.get_camera_by_id(camera_id)
 
                 except VimbaCameraError:
@@ -149,7 +149,7 @@ class Allied_GVSP_Camera:
         cam.set_pixel_format(PixelFormat.BayerRG8)
 
         # Sample code below updates the user set id for the camera - hardcoded to 1 currently
-        print("setting user set id")
+        # print("setting user set id")
         cam.get_feature_by_name("UserSetSelector").set(1)
         cmd = cam.get_feature_by_name("UserSetLoad")
         cmd.run()
@@ -175,8 +175,8 @@ class Allied_GVSP_Camera:
             # Increment counts
             self.frameCount += 1
             self.frameRateCount += 1
-            print('{} acquired {}'.format(cam, frame), flush=True)
-            print(f"[{datetime.now()}] Received frame {frame} for cap camera.")
+            # print('{} acquired {}'.format(cam, frame), flush=True)
+            # print(f"[{datetime.now()}] Received frame {frame} for cap camera.")
             frame = np.frombuffer(frame._buffer, dtype=np.uint8).reshape(frame._frame.height, frame._frame.width)
             frame = cv2.cvtColor(frame, cv2.COLOR_BAYER_RG2RGB)
             frame_optimized = frame_resize(frame, self.targetDim)
@@ -196,7 +196,7 @@ class Allied_GVSP_Camera:
             else:
                 from inference.onnxruntime_yolov5 import predict_yolo
                 result = predict_yolo(frame_optimized)
-            print(json.dumps(result))
+            # print(json.dumps(result))
 
             now = datetime.now()
             created = now.isoformat()
@@ -210,7 +210,7 @@ class Allied_GVSP_Camera:
             retrainFilePath = os.path.join('/images_volume', retrainFileName)
             detection_count = len(result['predictions'])
             t_infer = result["inference_time"]
-            print(f"Detection Count: {detection_count}")
+            # print(f"Detection Count: {detection_count}")
 
             if detection_count > 0:
                 inference_obj = {
@@ -271,7 +271,7 @@ class Allied_GVSP_Camera:
                 self.send_to_upload(json.dumps(annotated_msg))
         
             elif self.storeAllInferences:
-                print("No object detected.")
+                # print("No object detected.")
                 inference_obj = {
                     'model_name': self.model_name,
                     'object_detected': 0,

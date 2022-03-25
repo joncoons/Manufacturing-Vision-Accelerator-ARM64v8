@@ -22,7 +22,7 @@ def create_client():
         if message.input_name in ("inputImageSend"):
             message = message.data
             msg_str = message.decode('utf-8')
-            print(msg_str)
+            # print(msg_str)
             msg_json = json.loads(msg_str)
             fs_name = msg_json.get('fs_name')
             img_name = msg_json.get('img_name')
@@ -52,7 +52,7 @@ async def run_sample(client):
 def main():
     if not sys.version >= "3.5.3":
         raise Exception( "The sample requires python 3.5.3+. Current version of Python: %s" % sys.version )
-    print ( "IoT Hub Client for Python" )
+    # print ( "IoT Hub Client for Python" )
     
 
     # NOTE: Client is implicitly connected due to the handler being set on it

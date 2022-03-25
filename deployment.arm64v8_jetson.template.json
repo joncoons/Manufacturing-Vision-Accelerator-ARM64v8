@@ -36,7 +36,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "mcr.microsoft.com/azureiotedge-hub:1.2.6-linux-arm64v8",
+              "image": "docker :1.2.6-linux-arm64v8",
               "createOptions": {
                 "HostConfig": {
                   "PortBindings": {

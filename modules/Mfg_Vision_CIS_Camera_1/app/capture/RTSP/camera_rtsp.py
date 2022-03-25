@@ -68,7 +68,7 @@ class RTSP_Camera():
                 if self.inferenceFPS > 0:
                     if self.frameRateCount == int(self.camFPS/self.inferenceFPS):
                         h, w = frame.shape[:2]
-                        print("\n\n Original frame height = {} \n Frame width = {} \n\n ".format(h,w))             
+                        # print("\n\n Original frame height = {} \n Frame width = {} \n\n ".format(h,w))             
                         frame_optimized = frame_resize(frame, self.targetDim)
                         if self.modelACV:
                             from inference.onnxruntime_predict import predict_acv
@@ -77,7 +77,7 @@ class RTSP_Camera():
                         else:
                             from inference.onnxruntime_yolov5 import predict_yolo
                             result = predict_yolo(frame_optimized)
-                        print(json.dumps(result))
+                        # print(json.dumps(result))
 
                         now = datetime.now()
                         created = now.isoformat()
@@ -91,7 +91,7 @@ class RTSP_Camera():
                         retrainFilePath = os.path.join('/images_volume', retrainFileName)
                         detection_count = len(result['predictions'])
                         t_infer = result["inference_time"]
-                        print(f"Detection Count: {detection_count}")
+                        # print(f"Detection Count: {detection_count}")
 
                         if detection_count > 0:
                             inference_obj = {
@@ -151,7 +151,7 @@ class RTSP_Camera():
                             self.send_to_upload(json.dumps(annotated_msg))
                     
                         elif self.storeAllInferences:
-                            print("No object detected.")
+                            # print("No object detected.")
                             inference_obj = {
                                 'model_name': self.model_name,
                                 'object_detected': 0,
