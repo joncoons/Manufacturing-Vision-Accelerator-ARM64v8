@@ -18,7 +18,7 @@ from wtforms import (
     RadioField)
 from wtforms.validators import DataRequired, Length, URL
 from aiot_device import get_edge_devices, get_edge_modules, get_module_twins, patch_module_twins, restart_module
-from aiot_cosmos import cosmos_create_items, cosmos_query_dm, cosmos_query_mt
+from aiot_cosmos import cosmos_create_items, cosmos_query_dm, cosmos_query_mt, cosmos_delete_db
 
 pkl_path = "/config/"
 col_hub_updates = "edgemoduletwins"
@@ -27,6 +27,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '5199F5E8F6D16AF4FF452D3D8B74D'
 
 Bootstrap(app)
+
 
 class SvcConfig(FlaskForm):
     hub_name = StringField('IoT Hub Name', validators=[DataRequired()])
@@ -129,9 +130,21 @@ def main_list():
 def svc_config():
 
     action = request.args.get('action')  
+    print(f"Action = {action}")
     config_name = request.args.get('config')
 
     if action == "edit":
+        config = read_config(config_name)
+        form = SvcConfig(
+            hub_name = config["hub_name"],
+            hub_own_str = config["hub_own_str"],
+            cosmos_db = config["cosmos_db"],
+            cosmos_uri = config["cosmos_uri"],
+            cosmos_key = config["cosmos_key"]
+        )
+        message = "Edit Service Configuration"
+
+    elif action == "delete":
         config = read_config(config_name)
         hub_name = config["hub_name"]
         hub_own_str = config["hub_own_str"]
@@ -139,22 +152,15 @@ def svc_config():
         cosmos_uri = config["cosmos_uri"]
         cosmos_key = config["cosmos_key"]
 
-        form = SvcConfig(
-            hub_name = hub_name,
-            hub_own_str = hub_own_str,
-            cosmos_db = cosmos_db,
-            cosmos_uri = cosmos_uri,
-            cosmos_key = cosmos_key
-        )
+        config_path = os.path.join(pkl_path, config_name)
+        os.remove(config_path)
+        cosmos_delete_db(cosmos_db, cosmos_uri, cosmos_key)
 
-    elif action == "delete":
-        response = os.remove(f"{pkl_path}{config_name}")
-        return redirect( url_for('index') )
-    
+        return redirect( url_for('index') )    
     else:
         form = SvcConfig()
 
-    message = ""
+    message = "New Service Configuration"
 
     if form.validate_on_submit():
         hub_name = form.hub_name.data
@@ -173,7 +179,7 @@ def svc_config():
         config_write = open(f"{pkl_path}{hub_name}.pkl", "wb")
         pickle.dump(svc_cfg_dict, config_write)
         config_write.close()
-        message = "Configuration saved - database and collections created."
+        message = "Configuration saved - database and collections created. Click on Home."
 
         hub_poll = get_device_module(hub_own_str, cosmos_db, cosmos_uri, cosmos_key)
 
@@ -192,8 +198,9 @@ def twin_config():
 
     try:
         mt_data = cosmos_query_mt(cosmos_db, cosmos_uri, cosmos_key, col_twin_updates, deviceId, moduleId)
-        
-        form = TwinConfig(
+        mt_hub_data = cosmos_query_mt(cosmos_db, cosmos_uri, cosmos_key, col_hub_updates, deviceId, moduleId)
+        if len(mt_data) > 0:
+            form = TwinConfig(
             device_id = deviceId,
             module_id = moduleId,
             camera_gvsp_allied = mt_data[0]['CAMERA_GVSP_ALLIED'],
@@ -219,8 +226,35 @@ def twin_config():
             store_all_inferences = mt_data[0]['STORE_ALL_INFERENCES'],
             mssql_db = mt_data[0]['MSSQL_DB'],
             mssql_pwd = mt_data[0]['MSSQL_PWD']
-        )
-
+            )
+        elif len(mt_hub_data) > 0:
+            form = TwinConfig(
+            device_id = deviceId,
+            module_id = moduleId,
+            camera_gvsp_allied = mt_hub_data[0]['CAMERA_GVSP_ALLIED'],
+            camera_gvsp_basler = mt_hub_data[0]['CAMERA_GVSP_BASLER'],
+            camera_rtsp = mt_hub_data[0]['CAMERA_RTSP'],
+            camera_file = mt_hub_data[0]['CAMERA_FILE'],
+            camera_id = mt_hub_data[0]['CAMERA_ID'],
+            camera_trigger = mt_hub_data[0]['CAMERA_TRIGGER'],
+            camera_uri = mt_hub_data[0]['CAMERA_URI'],
+            camera_location = mt_hub_data[0]['CAMERA_LOCATION'],
+            camera_position = mt_hub_data[0]['CAMERA_POSITION'],
+            camera_fps = mt_hub_data[0]['CAMERA_FPS'],
+            inference_fps = mt_hub_data[0]['INFERENCE_FPS'],
+            model_acv = mt_hub_data[0]['MODEL_ACV'],
+            model_yolov5 = mt_hub_data[0]['MODEL_YOLOV5'],
+            model_name = mt_hub_data[0]['MODEL_NAME'],
+            model_version = mt_hub_data[0]['MODEL_VERSION'],
+            target_dim = mt_hub_data[0]['TARGET_DIM'],
+            prob_thres = mt_hub_data[0]['PROB_THRES'],
+            iou_thres = mt_hub_data[0]['IOU_THRES'],
+            retrain_interval = mt_hub_data[0]['RETRAIN_INTERVAL'],
+            store_raw_frames = mt_hub_data[0]['STORE_RAW_FRAMES'],
+            store_all_inferences = mt_hub_data[0]['STORE_ALL_INFERENCES'],
+            mssql_db = mt_hub_data[0]['MSSQL_DB'],
+            mssql_pwd = mt_hub_data[0]['MSSQL_PWD']
+            )
     except:
         form = TwinConfig(
             device_id = deviceId,
@@ -335,7 +369,7 @@ def internal_server_error(e):
 if __name__ == '__main__':
 
     # run locally
-    # app.run(host='127.0.0.1', port=22394) or
+    # app.run(host='127.0.0.1', port=22000) or
     # app.run(debug=True)
 
     # run in container

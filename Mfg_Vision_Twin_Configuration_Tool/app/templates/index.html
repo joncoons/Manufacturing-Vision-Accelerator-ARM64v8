@@ -13,17 +13,17 @@
                     </a>
                 </td>
                 <td> 
-                    <a href="{{ url_for('svc_config', action=edit, config=config['file_name']) }}">
+                    <a href="{{ url_for('svc_config', action='edit', config=config['file_name']) }}">
                         <h5>Edit Configuration</h5>
                     </a>
                 </td>
                 <td> 
-                    <a href="{{ url_for('svc_config', action=delete, config=config['file_name']) }}">
+                    <a href="{{ url_for('svc_config', action='delete', config=config['file_name']) }}">
                         <h5>Delete Configuration</h5>
                     </a>
                 </td>
                 <td> 
-                    <a href="{{ url_for('svc_config', action=new) }}">
+                    <a href="{{ url_for('svc_config', action='new') }}">
                         <h5>Add New Configuration</h5>
                     </a>
                 </td>

@@ -33,7 +33,7 @@ def get_edge_modules(hub_own_str):
         # print(f"Device list: {devices}")
         # devices = f"{devices}"
         module_list = []
-        substring = "CIS"
+        substrings = ['cis', 'CIS']
         device_len = len(device_list)
         # print(f"Length: {length}")
         for i in range(device_len):
@@ -41,9 +41,9 @@ def get_edge_modules(hub_own_str):
             device_modules = reg_mgr.get_modules(device_list[i])
             # print(f"Device: \n {devices[i]}\n Modules: \n{device_modules}")
             for module in device_modules:
-                if substring in f"{module}":
-                    deviceId = module.device_id
-                    moduleId = module.module_id
+                moduleId = str(module.module_id)
+                deviceId = str(module.device_id)
+                if any(substring in moduleId for substring in substrings):
                     print(f"Device:  {deviceId}")
                     print(f"Module:  {moduleId}\n")
                     module_dict = {

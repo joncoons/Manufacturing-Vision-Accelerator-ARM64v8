@@ -68,8 +68,8 @@ def index():
     det_list = []
     now = datetime.now()
     utc_now = datetime.utcnow()
-    # print(utc_now)
-    # print(now)
+    print(utc_now)
+    print(now)
     cams = q_camera() 
     for cam in cams:        
         inf_vals = q_inference(cam)
@@ -92,6 +92,6 @@ def index():
 
 if __name__ == '__main__':
 
-    app.run(host='0.0.0.0', port=23000)
+    app.run(host='0.0.0.0', port=24000)
 
 
