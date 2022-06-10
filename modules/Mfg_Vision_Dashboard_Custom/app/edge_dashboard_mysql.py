@@ -44,7 +44,7 @@ class Connect_MySQL():
             cursor = mysql_conn.cursor()
             cursor.execute("""SELECT model_name, object_detected, camera_id, camera_name, 
             annotated_image_name, ROUND(inferencing_time,2), created, unique_id FROM inference_data 
-            WHERE camera_id = %s ORDER BY created DESC LIMIT 1""", camera_id)
+            WHERE camera_id = %s ORDER BY id DESC LIMIT 1""", camera_id)
             q_1_results = cursor.fetchall()
             print(q_1_results)
             cursor.close()
