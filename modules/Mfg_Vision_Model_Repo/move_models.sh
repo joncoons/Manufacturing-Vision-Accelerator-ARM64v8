@@ -2,5 +2,6 @@
 
 set -e
 
-exec mv -f /models_temp/* /model_volume &
+exec yes | cp -rf /models_temp/* /model_volume &
+# exec mv -f /models_temp/* /model_volume &
 exec python3 /app/main.py 
