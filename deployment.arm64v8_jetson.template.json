@@ -22,7 +22,7 @@
           "edgeAgent": {
             "type": "docker",
             "settings": {
-              "image": "mcr.microsoft.com/azureiotedge-agent:1.2.6-linux-arm64v8",
+              "image": "mcr.microsoft.com/azureiotedge-agent:1.2.10-linux-arm64v8",
               "createOptions": {}
             },
             "env": {
@@ -36,7 +36,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "docker :1.2.6-linux-arm64v8",
+              "image": "mcr.microsoft.com/azureiotedge-hub:1.2.10-linux-arm64v8",
               "createOptions": {
                 "HostConfig": {
                   "PortBindings": {
@@ -105,6 +105,11 @@
                   ]
                 }
               }
+            },
+            "env": {
+              "BOUNDARY_DETECTION": {
+                "value": "false"
+              }
             }
           },
           "Mfg_Vision_Model_Repo": {
@@ -117,7 +122,8 @@
               "createOptions": {
                 "HostConfig": {
                   "Binds": [
-                    "/home/edge_assets/model_volume:/model_volume"
+                    "/home/edge_assets/model_volume:/model_volume",
+                    "/home/edge_assets/test_images:/test_images"
                   ]
                 },
                 "Mounts": [
@@ -197,7 +203,7 @@
             },
             "env": {
               "RETENTION_POLICY_SECONDS": {
-                "value": "7200"
+                "value": "300"
               }
             }
           },
@@ -276,13 +282,13 @@
                 "value": "1"
               },
               "MYSQL_DATABASE": {
-                "value": "defectdb"
+                "value": "${MYSQL_DB}"
               },
               "MYSQL_USER": {
                 "value": "SA"
               },
               "MYSQL_PWD": {
-                "value": "Password123"
+                "value": "${MYSQL_SA_PASSWORD}"
               }
             }
           }

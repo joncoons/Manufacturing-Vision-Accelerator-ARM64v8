@@ -27,6 +27,10 @@ RUN mkdir /config && chmod -R 777 /config
 
 RUN apt-get update
 
+# Shapely prereq
+RUN apt update && apt install -y --no-install-recommends \
+    libgeos-dev
+
 # Comment out if not using ACV->ONNX
 # RUN apt install -y --no-install-recommends \
 #     libprotobuf-dev protobuf-compiler && \
@@ -45,8 +49,8 @@ RUN cp /opt/Vimba_5_1/Tools/Viewer/Bin/arm_64bit/libVimbaC.so /usr/lib/aarch64-l
 RUN python3 -m pip install --upgrade pip wheel setuptools
 RUN python3 -m pip install pybind11 pytest
 RUN python3 -m pip install cython numpy>=1.19.0 pillow 
-RUN python3 -m pip install opencv-contrib-python-headless
-RUN python3 -m pip install azure-iot-device~=2.7.0 
+RUN python3 -m pip install opencv-python-headless~=4.5.5 opencv-contrib-python-headless~=4.5.5 
+RUN python3 -m pip install azure-iot-device~=2.7.0 shapely
 RUN python3 -m pip install mysql-connector-python
 
 
@@ -55,6 +59,7 @@ RUN python3 -m pip install mysql-connector-python
 
 # Comment out if not using YOLOv5->ONNX
 RUN python3 -m pip install torch torchvision
+# RUN python3 -m pip install torch==1.11.0+cu102 torchvision==0.12.0+cu102 torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cu102
 RUN python3 -m pip install pandas tqdm PyYAML
 RUN python3 -m pip install scipy seaborn requests
 RUN python3 -m pip install pybind11 pytest protobuf

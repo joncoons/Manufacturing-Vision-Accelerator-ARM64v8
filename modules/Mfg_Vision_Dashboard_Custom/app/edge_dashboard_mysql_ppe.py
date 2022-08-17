@@ -118,7 +118,7 @@ def index():
 
     p,f = _mysql.q_pass_fail()
 
-    return render_template('index.html', inf_count=inf_count, det_count = det_count, inf_list = inf_list, det_list=det_list, p=p, f=f)
+    return render_template('index_ppe.html', inf_count=inf_count, det_count = det_count, inf_list = inf_list, det_list=det_list, p=p, f=f)
 
 if __name__ == '__main__':
     try:
